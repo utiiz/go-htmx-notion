@@ -1,5 +1,7 @@
 package pages
 
+import "github.com/utiiz/go/notion/internal/templates/layouts"
+
 templ Base(title string) {
     <!DOCTYPE html>
     <html lang="en">
@@ -10,7 +12,8 @@ templ Base(title string) {
             <script src="/js/htmx.min.js"></script>
             <link href="/css/styles.css" rel="stylesheet" />
         </head>
-        <body class="font-sans bg-black text-yellow-200">
+        <body class="font-sans bg-zinc-900 flex gap-8">
+            @layouts.Sidebar()
             { children... }
         </body>
     </html>

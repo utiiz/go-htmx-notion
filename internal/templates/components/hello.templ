@@ -5,10 +5,8 @@ import "github.com/utiiz/go/notion/internal/models"
 
 templ User(user *models.User) {
     @pages.Base("User") {
-        @Sidebar()
-        <div>
-            <div hx-get="/" hx-trigger="click">{ user.Email }</div>
-            <button hx-get="/">Click me</button>
+        <div class="user text-gray-200">
+            <div>{ user.Email }</div>
         </div>
     }
 }
