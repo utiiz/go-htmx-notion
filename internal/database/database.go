@@ -29,7 +29,7 @@ func OpenDB() (*sqlx.DB, error) {
 	return db, nil
 }
 
-func GetUsers(db *sqlx.DB) (*models.User, error) {
+func GetUser(db *sqlx.DB) (*models.User, error) {
 	user := models.User{}
 	query := `SELECT * FROM "USER" LIMIT 1`
 
@@ -42,4 +42,49 @@ func GetUsers(db *sqlx.DB) (*models.User, error) {
 	fmt.Printf("%v\n", user)
 
 	return &user, nil
+}
+
+func GetProjects(db *sqlx.DB) (*[]models.Project, error) {
+	projects := []models.Project{}
+	query := `SELECT * FROM "PROJECT"`
+
+	err := db.Select(&projects, query)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return nil, err
+	}
+
+	fmt.Printf("%v\n", projects)
+
+	return &projects, nil
+}
+
+func GetFavoriteProjects(db *sqlx.DB, user *models.User) (*[]models.Project, error) {
+	projects := []models.Project{}
+	query := `SELECT p.* FROM "PROJECT" p LEFT JOIN "FAVORITE" f ON f.project_id = p.id WHERE f.user_id = $1`
+
+	err := db.Select(&projects, query, user.ID)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return nil, err
+	}
+
+	fmt.Printf("%v\n", projects)
+
+	return &projects, nil
+}
+
+func GetProject(db *sqlx.DB, id int) (*models.Project, error) {
+	project := models.Project{}
+	query := `SELECT * FROM "PROJECT" WHERE id = $1`
+
+	err := db.Get(&project, query, id)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return nil, err
+	}
+
+	fmt.Printf("%v\n", project)
+
+	return &project, nil
 }

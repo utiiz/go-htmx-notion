@@ -1,20 +1,22 @@
 package pages
 
 import "github.com/utiiz/go/notion/internal/templates/layouts"
+import "github.com/utiiz/go/notion/internal/models"
 
-templ Base(title string) {
+templ Base(projects *[]models.Project) {
     <!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>{ title }</title>
+            <title>Projects</title>
             <script src="/js/htmx.min.js"></script>
             <link href="/css/styles.css" rel="stylesheet" />
         </head>
-        <body class="font-sans bg-zinc-900 flex gap-8">
-            @layouts.Sidebar()
-            { children... }
+        <body class="font-sans bg-[#F6F8FA] flex">
+            @layouts.Sidebar(projects)
+            @layouts.Main()
         </body>
     </html>
 }
+

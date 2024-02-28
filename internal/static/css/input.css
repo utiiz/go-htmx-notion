@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* This styles the scrollbar track (the part the thumb slides along) */
+::-webkit-scrollbar-track {
+    background-color: transparent; /* Light grey track */
+}
+
+/* This styles the scrollbar thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Darker grey thumb */
+    border-radius: 6px; /* Rounded corners on the thumb */
+}
+
+/* This styles the scrollbar itself (including the thumb, track, and buttons) */
+::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+    height: 6px; /* Height of the scrollbar (for horizontal scrollbars) */
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+#sidebar #sidebar_projects:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(193, 193, 193, 0.5); /* Darker grey thumb */
+}

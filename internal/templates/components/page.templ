@@ -1,0 +1,22 @@
+package components
+
+import "fmt"
+
+templ Page(name string, number int, svgPath []string) {
+    <div class="h-10 flex place-items-center gap-2">
+        <div class="shrink-0 size-6 flex place-content-center items-center">
+            <svg class="size-5 text-[#495668]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                for _, path := range svgPath {
+                    <path stroke-linecap="round" stroke-linejoin="round" d={ path } />
+                }
+            </svg>
+        </div>
+        <div class="h-auto w-auto text-[#24282E] font">{ name }</div>
+        if number > 0 {
+            <div class="h-auto w-auto text-sm font-semibold mx-1 pl-2 pr-[10px] rounded-xl rounded-bl-none text-white bg-[#FF6D78]">
+                { fmt.Sprintf("%d", number) }
+            </div>
+        }
+    </div>
+}
+

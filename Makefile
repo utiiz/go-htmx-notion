@@ -14,12 +14,12 @@ tailwindcss_watch:
 	bun run tailwindcss --config tailwind.config.js -i internal/static/css/input.css -o internal/static/css/styles.css --watch
 
 templ:
-	templ generate
+	templ generate -watch -proxy=http://localhost:3000
 
-migrate_up:
+up:
 	migrate -source "file://internal/database/migrations" -database "postgresql://tuteaz:$(password)@localhost:5432/notion?sslmode=disable" up
 
-migrate_down:
+down:
 	migrate -source "file://internal/database/migrations" -database "postgresql://tuteaz:$(password)@localhost:5432/notion?sslmode=disable" down
 
 create_migration:

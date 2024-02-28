@@ -1,0 +1,22 @@
+package components
+
+import "strings"
+
+func getClassForKey(letter string) string {
+    class := "flex shrink-0 size-6 items-center justify-center border-[#E4E8EB] border-[1px] border-b-[3px] rounded-md text-[#979696]"
+    if letter == "⌘" {
+        class += " text-xl"
+    } else {
+        class += " font-medium"
+    }
+
+    return class
+}
+
+templ Key(letter string) {
+    <div class={ getClassForKey(letter) }>
+        { strings.ToUpper(letter) }
+    </div>
+}
+
+

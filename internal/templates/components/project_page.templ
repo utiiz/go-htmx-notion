@@ -1,0 +1,22 @@
+package components
+
+import "fmt"
+import "github.com/utiiz/go/notion/internal/models"
+
+func getClassForProjectPage(isSelected bool) string {
+    class := "relative pl-[19px] pr-3 h-10 flex items-center gap-[12px] rounded-lg"
+    if isSelected {
+        class += " bg-[#EEEFFF]"
+    }
+    return class
+}
+
+templ ProjectPage(project models.Project, projectPage ProjectPageType, isSelected bool) {
+<div class={ getClassForProjectPage(isSelected) } hx-get={ fmt.Sprintf("/select-project-page/%d/%d", project.ID, projectPage.ID) } hx-target={ fmt.Sprintf("#project-%d", project.ID) } hx-swap="outerHTML">
+        if isSelected {
+            <div class="absolute h-[26px] left-[18px] w-[3px] bg-gradient-to-r from-transparent to-transparent via-[#4C5BFF]" />
+        }
+        <div class="h-full border-l-[#DCE0E4] border-l-[1px]"></div>
+        <div class="grow">{ projectPage.Name }</div>
+    </div>
+}

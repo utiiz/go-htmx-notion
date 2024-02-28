@@ -1,0 +1,60 @@
+package components
+
+import "github.com/utiiz/go/notion/internal/models"
+import "fmt"
+
+type Form struct{
+    viewBox string
+    color string
+    path string
+}
+
+var (
+    circle = Form{"-2 -2 24 24", "#FFA898", "M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z"}
+    triangle = Form{"-2 -4 24 24", "#AAA9D5", "M10.528 2.358a1 1 0 0 0-1.377.32l-6.095 9.794A1 1 0 0 0 3.905 14h12.19a1 1 0 0 0 .85-1.528l-6.096-9.794a1 1 0 0 0-.32-.32zm2.019-.737l6.095 9.794A3 3 0 0 1 16.095 16H3.905a3 3 0 0 1-2.547-4.585L7.453 1.62a3 3 0 0 1 5.094 0z"}
+    square = Form{"-2 -2 24 24", "#AED8D2", "M4 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4zm0-2h12a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4z"}
+)
+
+func getForm(project models.Project) Form {
+    switch project.Icon {
+        case "triangle" :
+            return triangle
+        case "square" :
+            return square
+        default:
+            return circle
+    }
+}
+
+type ProjectPageType struct {
+    ID int
+    Name string
+}
+
+var (
+    backlog = ProjectPageType{1, "Product Backlog"}
+    design = ProjectPageType{2, "Design Sprint"}
+    execution = ProjectPageType{3, "Weekly Execution"}
+    tracking = ProjectPageType{4, "Bug Tracking"}
+    projectPages = []ProjectPageType{backlog, design, execution, tracking}
+)
+
+templ Project(project models.Project, isOpen bool, selected int) {
+    <div id={ fmt.Sprintf("project-%d", project.ID) } class="flex flex-col">
+        <div class="px-3 h-10 flex items-center gap-2" hx-get={ fmt.Sprintf("/select-project/%d", project.ID) } hx-target="#projects" hx-swap="outerHTML">
+            <svg class="size-[15px]" fill={ getForm(project).color } viewBox={ getForm(project).viewBox } xmlns="http://www.w3.org/2000/svg">
+                <path d={ getForm(project).path }/>
+            </svg>
+            <div class="grow">{ project.Name }</div>
+        </div>
+        if isOpen {
+            <div class="relative">
+                <div class="absolute h-2 w-[1px] bg-[#DCE0E4] top-[-0.5rem] left-[19px]" />
+                for _, projectPage := range projectPages {
+                    @ProjectPage(project, projectPage, projectPage.ID == selected)
+                }
+            </div>
+        }
+    </div>
+}
+

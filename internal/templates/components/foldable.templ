@@ -1,0 +1,27 @@
+package components
+
+import "github.com/utiiz/go/notion/internal/models"
+import "strings"
+import "fmt"
+
+templ Foldable(name string, projects *[]models.Project, isOpen bool, selected *int, link string) {
+    <div id={ strings.ToLower(name) } class="grow-0 shrink-0 basis-auto select-none">
+        <div class="flex flex-col my-6">
+            <div hx-get={ link } hx-target={ "#" + strings.ToLower(name) } hx-vals={ fmt.Sprintf("{\"isOpen\": %v}", isOpen) } class="flex items-center cursor-pointer">
+                <div class="uppercase tracking-widest text-[#929291] grow">{ name }</div>
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#9A9998">
+                    if isOpen {
+                    <path fill-rule="evenodd" d="M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z" clip-rule="evenodd" />
+                    } else {
+                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    }
+                </svg>
+            </div>
+            if isOpen {
+                for _, project := range *projects {
+                    @Project(project, selected != nil && project.ID == *selected, 1)
+                }
+            }
+        </div>
+    </div>
+}
