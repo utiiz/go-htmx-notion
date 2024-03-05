@@ -88,3 +88,18 @@ func GetProject(db *sqlx.DB, id int) (*models.Project, error) {
 
 	return &project, nil
 }
+
+func GetProjectByURL(db *sqlx.DB, url string) (*models.Project, error) {
+	project := models.Project{}
+	query := `SELECT * FROM "PROJECT" WHERE url = $1`
+
+	err := db.Get(&project, query, url)
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		return nil, err
+	}
+
+	fmt.Printf("%v\n", project)
+
+	return &project, nil
+}

@@ -11,12 +11,26 @@ func getClassForProjectPage(isSelected bool) string {
     return class
 }
 
-templ ProjectPage(project models.Project, projectPage ProjectPageType, isSelected bool) {
-<div class={ getClassForProjectPage(isSelected) } hx-get={ fmt.Sprintf("/select-project-page/%d/%d", project.ID, projectPage.ID) } hx-target={ fmt.Sprintf("#project-%d", project.ID) } hx-swap="outerHTML">
+templ ProjectPage(project models.Project, projectPage ProjectPageType, isSelected bool, parentId string) {
+    <div
+        id={ fmt.Sprintf("project-%d-%d-trigger", project.ID, projectPage.ID) }
+        class={ getClassForProjectPage(isSelected) }
+        hx-get={ fmt.Sprintf("/select-%s/%d/%d", parentId, project.ID, projectPage.ID) }
+        hx-target={ fmt.Sprintf("#%s-%d", parentId, project.ID) }
+        hx-swap="outerHTML"
+        hx-push-url={ fmt.Sprintf("/%s/%s", project.Url, projectPage.Url) } 
+    >
         if isSelected {
             <div class="absolute h-[26px] left-[18px] w-[3px] bg-gradient-to-r from-transparent to-transparent via-[#4C5BFF]" />
         }
         <div class="h-full border-l-[#DCE0E4] border-l-[1px]"></div>
         <div class="grow">{ projectPage.Name }</div>
+        <div
+            hx-get={ fmt.Sprintf("/show/%d/%d", project.ID, projectPage.ID) }
+            hx-trigger={ fmt.Sprintf("click from:#project-%d-%d-trigger", project.ID, projectPage.ID) }
+            hx-target="#main"
+            hx-swap="outerHTML"
+            class="hidden"
+        ></div>
     </div>
 }

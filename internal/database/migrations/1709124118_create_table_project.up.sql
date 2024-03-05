@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS "PROJECT" (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
-    icon VARCHAR(255)
+    icon VARCHAR(255),
+    url VARCHAR(255)
 );
 

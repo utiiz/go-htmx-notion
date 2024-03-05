@@ -12,16 +12,21 @@ var (
     profile = []string{"M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"};
 )
 
-var defaultSelectedProject int = 1
+func getSelectedProject(projects *[]models.Project, selected *models.Project) *models.Project {
+    if selected == nil {
+        return &(*projects)[0];
+    }
+    return selected
+}
 
-templ Sidebar(projects *[]models.Project) {
+templ Sidebar(projects *[]models.Project, selected *models.Project) {
     <div id="sidebar" class="p-4 my-2 w-72 min-w-72 flex flex-col gap-4">
         <div class="grow-0 flex flex-col gap-4">
             @components.Workspace()
             @components.Separator()
             @components.SearchInput()
         </div>
-        <div id="sidebar_projects" class="grow flex flex-col pr-2 overflow-y-auto">
+        <div id="sidebar_projects" class="grow flex flex-col overflow-y-auto">
             <div class="grow-0 shrink-0 basis-auto">
                 @components.Page("Home", 0, home)
                 @components.Page("Inbox", 6, inbox)
@@ -29,8 +34,8 @@ templ Sidebar(projects *[]models.Project) {
                 @components.Page("Roadmaps", 0, roadmaps)
             </div>
             <div class="grow shrink-0 basis-auto">
-                @components.Foldable("Projects", projects, true, &defaultSelectedProject, "/toggle-projects")
-                @components.Foldable("Favorites", projects, false, nil, "/toggle-favorites")
+                @components.Foldable("Projects", projects, true, getSelectedProject(projects, selected))
+                @components.Foldable("Favorites", projects, false, nil)
             </div>
         </div>
         <div class="grow-0">

@@ -3,7 +3,14 @@ package pages
 import "github.com/utiiz/go/notion/internal/templates/layouts"
 import "github.com/utiiz/go/notion/internal/models"
 
-templ Base(projects *[]models.Project) {
+func getSelectedProject(projects *[]models.Project, selected *models.Project) *models.Project {
+    if selected == nil {
+        return &(*projects)[0];
+    }
+    return selected
+}
+
+templ Base(projects *[]models.Project, selected *models.Project) {
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -14,8 +21,8 @@ templ Base(projects *[]models.Project) {
             <link href="/css/styles.css" rel="stylesheet" />
         </head>
         <body class="font-sans bg-[#F6F8FA] flex">
-            @layouts.Sidebar(projects)
-            @layouts.Main()
+            @layouts.Sidebar(projects, selected)
+            @layouts.Main(getSelectedProject(projects, selected))
         </body>
     </html>
 }

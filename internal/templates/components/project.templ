@@ -29,19 +29,20 @@ func getForm(project models.Project) Form {
 type ProjectPageType struct {
     ID int
     Name string
+    Url string
 }
 
 var (
-    backlog = ProjectPageType{1, "Product Backlog"}
-    design = ProjectPageType{2, "Design Sprint"}
-    execution = ProjectPageType{3, "Weekly Execution"}
-    tracking = ProjectPageType{4, "Bug Tracking"}
+    backlog = ProjectPageType{1, "Product Backlog", "product-backlog"}
+    design = ProjectPageType{2, "Design Sprint", "design-sprint"}
+    execution = ProjectPageType{3, "Weekly Execution", "weekly-execution"}
+    tracking = ProjectPageType{4, "Bug Tracking", "bug-tracking"}
     projectPages = []ProjectPageType{backlog, design, execution, tracking}
 )
 
-templ Project(project models.Project, isOpen bool, selected int) {
-    <div id={ fmt.Sprintf("project-%d", project.ID) } class="flex flex-col">
-        <div class="px-3 h-10 flex items-center gap-2" hx-get={ fmt.Sprintf("/select-project/%d", project.ID) } hx-target="#projects" hx-swap="outerHTML">
+templ Project(project models.Project, isOpen bool, selected int, parentId string) {
+    <div id={ fmt.Sprintf("%s-%d", parentId, project.ID) } class="flex flex-col">
+        <div id={ fmt.Sprintf("%s-%d-trigger", parentId, project.ID) } class="px-3 h-10 flex items-center gap-2" hx-get={ fmt.Sprintf("/toggle-%s/%d", parentId, project.ID) } hx-target={ fmt.Sprintf("#%s", parentId) } hx-swap="outerHTML">
             <svg class="size-[15px]" fill={ getForm(project).color } viewBox={ getForm(project).viewBox } xmlns="http://www.w3.org/2000/svg">
                 <path d={ getForm(project).path }/>
             </svg>
@@ -51,7 +52,7 @@ templ Project(project models.Project, isOpen bool, selected int) {
             <div class="relative">
                 <div class="absolute h-2 w-[1px] bg-[#DCE0E4] top-[-0.5rem] left-[19px]" />
                 for _, projectPage := range projectPages {
-                    @ProjectPage(project, projectPage, projectPage.ID == selected)
+                    @ProjectPage(project, projectPage, projectPage.ID == selected, parentId)
                 }
             </div>
         }

@@ -1,0 +1,44 @@
+package components
+
+import "github.com/utiiz/go/notion/internal/models"
+import "fmt"
+
+func getUsers() []models.User {
+    return []models.User {
+        {ID: 1, Firstname: "Tanguy"},
+        {ID: 1, Firstname: "Laura"},
+        {ID: 1, Firstname: "Alex"},
+        {ID: 1, Firstname: "Quentin"},
+    }
+}
+
+templ ProjectUsers(project models.Project) {
+    <div class="flex flex-row-reverse gap-3">
+        <!-- ADD TASK BUTTON -->
+        <div class="flex gap-1 px-4 my-[1px] items-center bg-gradient-to-b from-[#6572FF] to-[#5261FF] rounded-lg border-[1px] border-[#291EE4] text-white font-semibold cursor-pointer">
+            <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+            </svg>
+            <div class="">
+                Add Task
+            </div>
+        </div>
+
+        <!-- INVITE BUTTON -->
+        <div class="flex gap-1 px-4 my-[1px] items-center bg-white rounded-lg border-[1px] border-[#E0E4EA] font-semibold cursor-pointer">
+            <svg class="size-6 text-[#384159]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+            </svg>
+            <div class="">
+                Invite
+            </div>
+        </div>
+
+        <!-- INVITE BUTTON -->
+        <div class={ "flex items-center w-[" + fmt.Sprintf("%d", 40 + ( (len(getUsers()) - 1) * 20)) + "px] my-[1px] relative" }>
+            for idx := range getUsers() {
+                <div class={ "size-10 bg-red-500 rounded-full border-4 border-white absolute right-[" + fmt.Sprintf("%d", 20 * (len(getUsers()) - idx - 1)) + "px]" }></div>
+            }
+        </div>
+    </div>
+    }

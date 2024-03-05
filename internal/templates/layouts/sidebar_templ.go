@@ -22,9 +22,14 @@ var (
 	profile  = []string{"M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"}
 )
 
-var defaultSelectedProject int = 1
+func getSelectedProject(projects *[]models.Project, selected *models.Project) *models.Project {
+	if selected == nil {
+		return &(*projects)[0]
+	}
+	return selected
+}
 
-func Sidebar(projects *[]models.Project) templ.Component {
+func Sidebar(projects *[]models.Project, selected *models.Project) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -77,11 +82,11 @@ func Sidebar(projects *[]models.Project) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Foldable("Projects", projects, true, &defaultSelectedProject, "/toggle-projects").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Foldable("Projects", projects, true, getSelectedProject(projects, selected)).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Foldable("Favorites", projects, false, nil, "/toggle-favorites").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Foldable("Favorites", projects, false, nil).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

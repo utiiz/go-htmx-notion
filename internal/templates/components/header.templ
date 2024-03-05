@@ -1,0 +1,29 @@
+package components
+
+import "github.com/utiiz/go/notion/internal/models"
+
+templ Header(project models.Project) {
+    <div class="flex flex-col gap-2 py-4">
+        <div class="h-10 flex items-center gap-2 px-5">
+            <svg class="size-[15px]" fill={ getForm(project).color } viewBox={ getForm(project).viewBox } xmlns="http://www.w3.org/2000/svg">
+                <path d={ getForm(project).path }/>
+            </svg>
+            <div class="text-[#D0D0D0] grow-0">{ project.Name }</div>
+            <div class="grow-0">/</div>
+            <div class="grow">Product Backlog</div>
+        </div>
+
+        <div class="flex justify-between px-5 mb-4">
+            <div class="flex items-center gap-4">
+                <div class="text-[32px] font-semibold">Product Backlog</div>
+                <svg class="size-7 text-[#5B6676]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+            </div>
+            @ProjectUsers(project)
+        </div>
+
+        @Tabs()
+    </div>
+}
+

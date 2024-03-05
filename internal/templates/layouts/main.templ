@@ -1,8 +1,16 @@
 package layouts
 
-templ Main() {
+import "github.com/utiiz/go/notion/internal/models"
+import "github.com/utiiz/go/notion/internal/templates/components"
+
+templ Main(project *models.Project) {
     <div id="main" class="py-4 pr-4 size-full flex">
-        <div class="p-4 rounded-lg drop-shadow-sm bg-white grow"></div>
+        <div class="rounded-lg drop-shadow-sm bg-white grow relative">
+            <div class="absolute top-0 right-0 w-auto h-14 py-2 px-2 opacity-50">
+                <img src="/assets/bg_dots.png" class="h-full"/>
+            </div>
+            @components.Header(*project)
+        </div>
     </div>
 }
 
