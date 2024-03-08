@@ -5,39 +5,61 @@ import "strings"
 import "fmt"
 
 func getOtherFoldable(name string) string {
-    switch strings.ToLower(name) {
-    case "favorites":
-        return "projects"
-    default:
-        return "favorites"
-    }
+	switch strings.ToLower(name) {
+	case "favorites":
+		return "projects"
+	default:
+		return "favorites"
+	}
 }
 
 templ Foldable(name string, projects *[]models.Project, isOpen bool, selected *models.Project) {
-    <div id={ strings.ToLower(name) } class="my-6 grow-0 shrink-0 basis-auto select-none" data-open={ fmt.Sprintf("%t", isOpen) }>
-        <div class="flex flex-col">
-            <div id={ fmt.Sprintf("%s-trigger", strings.ToLower(name)) } hx-get={ fmt.Sprintf("/toggle-%s", strings.ToLower(name)) } hx-target={ "#" + strings.ToLower(name) } hx-vals={ fmt.Sprintf("{\"isOpen\": %t}", isOpen) } class="flex items-center cursor-pointer">
-                <div class="uppercase tracking-widest text-[#929291] grow">{ name }</div>
-                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#9A9998">
-                    if isOpen {
-                        <path fill-rule="evenodd" d="M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z" clip-rule="evenodd" />
-                    } else {
-                        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                    }
-                </svg>
-            </div>
-            if isOpen {
-                for _, project := range *projects {
-                    @Project(project, project.ID == selected.ID, 1, fmt.Sprintf("%s", strings.ToLower(name)))
-                }
-            }
-        </div>
-        <div
-            hx-get={ fmt.Sprintf("/close-%s", getOtherFoldable(name)) }
-            hx-trigger={ fmt.Sprintf("click from:#%s-trigger", strings.ToLower(name)) }
-            hx-target={ fmt.Sprintf("#%s", getOtherFoldable(name)) }
-            hx-swap="outerHTML"
-            class="hidden"
-        />
-    </div>
+	<div
+		id={ strings.ToLower(name) }
+		class="my-6 grow-0 shrink-0 basis-auto select-none"
+		data-open={ fmt.Sprintf("%t",
+    isOpen) }
+	>
+		<div class="flex flex-col">
+			<div
+				id={ fmt.Sprintf("%s-trigger", strings.ToLower(name)) }
+				hx-get={ fmt.Sprintf("/toggle-%s",
+            strings.ToLower(name)) }
+				hx-target={ "#" + strings.ToLower(name) }
+				hx-vals={ fmt.Sprintf("{\"isOpen\": %t}",
+            isOpen) }
+				class="flex items-center cursor-pointer"
+			>
+				<div class="uppercase tracking-widest text-[#929291] grow">{ name }</div>
+				<svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#9A9998">
+					if isOpen {
+						<path
+							fill-rule="evenodd"
+							d="M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z"
+							clip-rule="evenodd"
+						></path>
+					} else {
+						<path
+							fill-rule="evenodd"
+							d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+							clip-rule="evenodd"
+						></path>
+					}
+				</svg>
+			</div>
+			if isOpen {
+				for _, project := range *projects {
+					@Project(project, selected != nil && project.ID == selected.ID, 1, fmt.Sprintf("%s", strings.ToLower(name)))
+				}
+			}
+		</div>
+		<div
+			hx-get={ fmt.Sprintf("/close-%s", getOtherFoldable(name)) }
+			hx-trigger={ fmt.Sprintf("click from:#%s-trigger",
+        strings.ToLower(name)) }
+			hx-target={ fmt.Sprintf("#%s", getOtherFoldable(name)) }
+			hx-swap="outerHTML"
+			class="hidden"
+		></div>
+	</div>
 }
